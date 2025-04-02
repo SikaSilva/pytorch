@@ -982,7 +982,7 @@ if(NOT MSVC)
   # Details at http://eigen.tuxfamily.org/bz/show_bug.cgi?id=1459
   string(APPEND CMAKE_CXX_FLAGS " -Wall")
   string(APPEND CMAKE_CXX_FLAGS " -Wextra")
-  append_cxx_flag_if_supported("-Werror=return-type" CMAKE_CXX_FLAGS)
+  # append_cxx_flag_if_supported("-Werror=return-type" CMAKE_CXX_FLAGS)
   append_cxx_flag_if_supported("-Werror=non-virtual-dtor" CMAKE_CXX_FLAGS)
   append_cxx_flag_if_supported("-Werror=braced-scalar-init" CMAKE_CXX_FLAGS)
   append_cxx_flag_if_supported("-Werror=range-loop-construct" CMAKE_CXX_FLAGS)

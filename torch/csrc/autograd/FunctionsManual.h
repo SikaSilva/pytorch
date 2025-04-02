@@ -1112,4 +1112,9 @@ mkldnn_rnn_layer_differentiable_backward(
 
 Tensor values_backward(const Tensor& grad, const Tensor& self);
 
+std::tuple<Tensor, Tensor, Tensor> my_attention_backward(
+    Tensor const& grad_out_o, Tensor const& grad_out_a, Tensor const& q,
+    Tensor const& k, Tensor const& v, Tensor const& a,
+    std::array<bool, 3> output_mask);
+
 } // namespace torch::autograd::generated::details

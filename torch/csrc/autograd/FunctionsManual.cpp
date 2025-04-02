@@ -7218,4 +7218,82 @@ Tensor values_backward(const Tensor& grad, const Tensor& self) {
   return grad_self;
 }
 
+std::tuple<Tensor, Tensor, Tensor> my_attention_backward(
+  Tensor const& grad_out_o,
+  Tensor const& grad_out_a,
+  Tensor const& q,
+  Tensor const& k,
+  Tensor const& v,
+  Tensor const& a,
+  std::array<bool, 3> output_mask) {
+  TORCH_CHECK(
+      output_mask[0] || output_mask[1] || output_mask[2],
+      "at least one of the q, k, v needs a gradient");
+
+  std::cout << std::endl
+            << std::endl
+            << "test fast compile" << std::endl
+            << "just simple clean and rebuild will be fine" << std::endl
+            << "my_attention_backward start --------------------------"
+            << std::endl;
+  std::cout << "grad_out_o:\n" << grad_out_o << std::endl;
+  std::cout << "grad_out_a:\n" << grad_out_a << std::endl;
+  std::cout << "q:\n" << q << std::endl;
+  std::cout << "k:\n" << k << std::endl;
+  std::cout << "v:\n" << v << std::endl;
+  Tensor grad_q, grad_k, grad_v;
+
+  auto const need_grad_q = output_mask[0];
+  auto const need_grad_k = output_mask[1];
+  auto const need_grad_v = output_mask[2];
+
+  Tensor grad_a;
+  if (grad_out_o.defined()) {
+    if (need_grad_v) {
+      grad_v = at::matmul(a.t(), grad_out_o);
+    }
+
+    if (need_grad_q || need_grad_k) {
+      grad_a = at::matmul(grad_out_o, v.t());
+    }
+  }
+
+  if (need_grad_q || need_grad_k) {
+    Tensor temp_grad_a;
+    if (grad_out_a.defined() && grad_a.defined()) {
+      temp_grad_a = grad_out_a + grad_a;
+    } else if (grad_out_a.defined()) {
+      temp_grad_a = grad_out_a;
+    } else if (grad_a.defined()) {
+      temp_grad_a = grad_a;
+    } else {
+      TORCH_CHECK(
+          false,
+          "To compute dq or dk, da should be back-probagated from at least one branch");
+    }
+
+    // forward: a = tanh(x)
+    // backward: dx = da * (1 - a * a)
+    Tensor dx = temp_grad_a * (1 - a * a);
+
+    // forward: x = mm(q, k')
+    // backward: dq = mm(dx, k); dk = mm(dx', q)
+    if (need_grad_q) {
+      grad_q = at::matmul(dx, k);
+    }
+    if (need_grad_k) {
+      grad_k = at::matmul(dx.t(), q);
+    }
+  }
+
+  std::cout << "grad_q:\n" << grad_q << std::endl;
+  std::cout << "grad_k:\n" << grad_k << std::endl;
+  std::cout << "grad_v:\n" << grad_v << std::endl;
+  std::cout << "my_attention_backward end --------------------------"
+            << std::endl
+            << std::endl;
+
+  return std::make_tuple(grad_q, grad_k, grad_v);
+}
+
 } // namespace torch::autograd::generated::details

@@ -9270,6 +9270,30 @@ def sample_inputs_multi_head_attention_forward(opinfo, device, dtype, requires_g
         yield SampleInput(q, args=sample_args, kwargs=sample_kwargs)
 
 
+def sample_inputs_my_attention(op_info, device, dtype, requires_grad, **kwargs):
+    make = partial(make_tensor, device=device, dtype=dtype, requires_grad=requires_grad)
+
+    q_shape = (2, 3)
+    k_shape = (2, 3)
+    v_shape = (2, 4)
+
+    yield SampleInput(make(q_shape), make(k_shape), make(v_shape))
+
+def error_inputs_my_attention(op_info, device, dtype, requires_grad, **kwargs):
+    make = partial(make_tensor, device=device, dtype=dtype, requires_grad=requires_grad)
+
+    q_shape = (2, 3)
+    k_shape = (2, 4)
+    v_shape = (2, 4)
+
+    # This input should catch error in q and k dimension mismatch
+    yield ErrorInput(SampleInput(make(q_shape), make(k_shape), make(v_shape)))
+
+    q_shape = (2, 3, 5)
+    # This input should catch error as attn is designed to work only with 2D tensors
+    yield ErrorInput(SampleInput(make(q_shape), make(k_shape), make(v_shape)))
+
+
 # Includes some values such that N * N won't be a multiple of 4,
 # which should ensure we test the vectorized and non-vectorized
 # kernel code paths.
@@ -18332,6 +18356,12 @@ op_db: list[OpInfo] = [
            ),
            sample_inputs_func=sample_inputs_atleast1d2d3d,
            ),
+    OpInfo('my_attention',
+           dtypes=floating_types_and(torch.bfloat16),
+           supports_out=False,
+           supports_autograd=True,
+           sample_inputs_func=sample_inputs_my_attention,
+           error_inputs_func=error_inputs_my_attention),
     OpInfo('flatten',
            dtypes=all_types_and_complex_and(torch.bool, torch.float16, torch.bfloat16, torch.chalf),
            ref=reference_flatten,

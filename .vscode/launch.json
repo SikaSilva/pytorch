@@ -1,0 +1,58 @@
+{
+  // 使用 IntelliSense 了解相关属性。
+  // 悬停以查看现有属性的描述。
+  // 欲了解更多信息，请访问: https://go.microsoft.com/fwlink/?linkid=830387
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "pydb: setup",
+      "type": "debugpy",
+      "request": "launch",
+      "program": "${file}",
+      "console": "integratedTerminal",
+      "args": ["develop"],
+      "env": {
+        "DEBUG": "1",
+        "USE_MKLDNN": "0",
+        "USE_CUDA": "1",
+        "BUILD_TEST": "0",
+        "USE_FBGEMM": "0",
+        "USE_NNPACK": "0",
+        "USE_QNNPACK": "0",
+        "USE_XNNPACK": "0",
+        "USE_KINETO": "0",
+        "BUILD_CAFFE2": "0",
+        "USE_NCCL": "0",
+        "BUILD_CAFFE2_OPS": "0",
+        "USE_TENSORPIPE": "1",
+        "USE_DISTRIBUTED": "1",
+        "MAX_JOBS": "16"
+      }
+    },
+    {
+      "name": "pydb: test_my_attention",
+      "type": "debugpy",
+      "request": "launch",
+      "program": "${workspaceFolder}/test/test_my_attention.py",
+      "args": ["TestMyAttention.test_my_native_backward"],
+      "console": "integratedTerminal",
+      "stopOnEntry": true,
+      "justMyCode": false
+    },
+    {
+      "name": "gdb: pytorch",
+      "type": "cppdbg",
+      "request": "attach",
+      "program": "/root/miniconda/envs/mypytorch0/bin/python",
+      "processId": "${command:pickProcess}",
+      "MIMode": "gdb",
+      "setupCommands": [
+        {
+          "description": "Enable pretty-printing for gdb",
+          "text": "-enable-pretty-printing",
+          "ignoreFailures": true
+        }
+      ]
+    }
+  ]
+}
