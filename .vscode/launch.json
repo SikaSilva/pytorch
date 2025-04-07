@@ -5,31 +5,6 @@
   "version": "0.2.0",
   "configurations": [
     {
-      "name": "pydb: setup",
-      "type": "debugpy",
-      "request": "launch",
-      "program": "${file}",
-      "console": "integratedTerminal",
-      "args": ["develop"],
-      "env": {
-        "DEBUG": "1",
-        "USE_MKLDNN": "0",
-        "USE_CUDA": "1",
-        "BUILD_TEST": "0",
-        "USE_FBGEMM": "0",
-        "USE_NNPACK": "0",
-        "USE_QNNPACK": "0",
-        "USE_XNNPACK": "0",
-        "USE_KINETO": "0",
-        "BUILD_CAFFE2": "0",
-        "USE_NCCL": "0",
-        "BUILD_CAFFE2_OPS": "0",
-        "USE_TENSORPIPE": "1",
-        "USE_DISTRIBUTED": "1",
-        "MAX_JOBS": "16"
-      }
-    },
-    {
       "name": "pydb: test_my_attention",
       "type": "debugpy",
       "request": "launch",
@@ -37,6 +12,15 @@
       "args": ["TestMyAttention.test_my_native_backward"],
       "console": "integratedTerminal",
       "stopOnEntry": true,
+      "justMyCode": false
+    },
+    {
+      "name": "pydb: test_my_dp",
+      "type": "debugpy",
+      "request": "launch",
+      "program": "${workspaceFolder}/test/test_my_dp.py",
+      "console": "integratedTerminal",
+      "stopOnEntry": false,
       "justMyCode": false
     },
     {
