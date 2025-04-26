@@ -5,11 +5,11 @@
   "version": "0.2.0",
   "configurations": [
     {
-      "name": "pydb: test_my_attention",
+      "name": "pydb: test_my_ping_native_method",
       "type": "debugpy",
       "request": "launch",
       "program": "${workspaceFolder}/test/test_my_attention.py",
-      "args": ["TestMyAttention.test_my_native_backward"],
+      "args": ["TestMyAttention.test_my_ping_native_method"],
       "console": "integratedTerminal",
       "stopOnEntry": true,
       "justMyCode": false
@@ -24,7 +24,23 @@
       "justMyCode": false
     },
     {
-      "name": "gdb: pytorch",
+      "name": "pydb: test_my_ddp",
+      "type": "debugpy",
+      "request": "launch",
+      "program": "${workspaceFolder}/test/test_my_ddp.py",
+      "console": "integratedTerminal",
+      "stopOnEntry": false,
+      "justMyCode": false
+    },
+    {
+      "name": "lldb: attach pytorch",
+      "type": "lldb",
+      "request": "attach",
+      "program": "/root/miniconda/envs/mypytorch0/bin/python",
+      "pid": "${command:pickProcess}"
+    },
+    {
+      "name": "gdb: attach pytorch",
       "type": "cppdbg",
       "request": "attach",
       "program": "/root/miniconda/envs/mypytorch0/bin/python",

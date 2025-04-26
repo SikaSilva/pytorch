@@ -214,4 +214,10 @@ void storage_fill(const at::Storage& self, uint8_t value);
 void storage_set(const at::Storage& self, ptrdiff_t idx, uint8_t value);
 uint8_t storage_get(const at::Storage& self, ptrdiff_t idx);
 
+namespace torch::gdb {
+
+TORCH_PYTHON_API char* tensor_repr(const at::Tensor& tensor);
+
+} // namespace torch::gdb
+
 #endif

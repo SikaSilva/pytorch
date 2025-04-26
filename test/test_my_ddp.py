@@ -93,6 +93,7 @@ def train(rank, world_size):
 
 if __name__ == '__main__':
     # 总进程数，即GPU数量
-    world_size = 4
+    world_size = 1
     # 使用多进程启动训练，每个进程在一个GPU上进行训练
-    mp.spawn(train, args=(world_size,), nprocs=world_size, join=True)
+    # mp.spawn(train, args=(world_size,), nprocs=world_size, join=True)
+    train(0, world_size)
