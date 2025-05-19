@@ -15,6 +15,16 @@
       "justMyCode": false
     },
     {
+      "name": "pydb: test_local_backward_engine",
+      "type": "debugpy",
+      "request": "launch",
+      "program": "${workspaceFolder}/test/test_my_attention.py",
+      "args": ["TestMyAttention.test_my_native_backward"],
+      "console": "integratedTerminal",
+      "stopOnEntry": true,
+      "justMyCode": false
+    },
+    {
       "name": "pydb: test_my_dp",
       "type": "debugpy",
       "request": "launch",
@@ -28,6 +38,24 @@
       "type": "debugpy",
       "request": "launch",
       "program": "${workspaceFolder}/test/test_my_ddp.py",
+      "console": "integratedTerminal",
+      "stopOnEntry": false,
+      "justMyCode": false
+    },
+    {
+      "name": "pydb: test_my_dist_autograd",
+      "type": "debugpy",
+      "request": "launch",
+      "program": "${workspaceFolder}/test/test_my_dist_autograd.py",
+      "console": "integratedTerminal",
+      "stopOnEntry": false,
+      "justMyCode": false
+    },
+    {
+      "name": "pydb: test_my_optimizer",
+      "type": "debugpy",
+      "request": "launch",
+      "program": "${workspaceFolder}/test/test_my_optimizer.py",
       "console": "integratedTerminal",
       "stopOnEntry": false,
       "justMyCode": false
