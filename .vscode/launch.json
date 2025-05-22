@@ -52,13 +52,22 @@
       "justMyCode": false
     },
     {
-      "name": "pydb: test_my_optimizer",
+      "name": "pydb: test_my_dist_optimizer",
       "type": "debugpy",
       "request": "launch",
-      "program": "${workspaceFolder}/test/test_my_optimizer.py",
+      "program": "${workspaceFolder}/test/test_my_dist_optimizer.py",
       "console": "integratedTerminal",
       "stopOnEntry": false,
       "justMyCode": false
+    },
+    {
+      "name": "pydb: test_my_torchrun",
+      "type": "debugpy",
+      "request": "launch",
+      "program": "/root/miniconda/envs/mypytorch0/bin/torchrun",
+      "args": ["--nnodes=1:2", "--nproc_per_node=2", "--rdzv-backend=c10d", "--rdzv-endpoint=localhost:29500", "--rdzv-id=5247", "${workspaceFolder}/test/test_my_torchrun.py"],
+      "console": "integratedTerminal",
+      "justMyCode": false,
     },
     {
       "name": "lldb: attach pytorch",

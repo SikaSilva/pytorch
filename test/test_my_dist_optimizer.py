@@ -4,6 +4,7 @@ import torch.distributed.autograd as dist_autograd
 from torch.distributed import rpc
 from torch import optim
 from torch.distributed.optim import DistributedOptimizer
+from torch.distributed.rpc import TensorPipeRpcBackendOptions
 
 
 def random_tensor():
@@ -14,11 +15,16 @@ def _run_process(rank, dst_rank, world_size):
     name = "worker{}".format(rank)
     dst_name = "worker{}".format(dst_rank)
 
+    # 配置TensorPipe后端选项
+    rpc_backend_options = TensorPipeRpcBackendOptions()
+    rpc_backend_options.init_method = "tcp://localhost:29501"
+
     # Initialize RPC.
     rpc.init_rpc(
         name=name,
         rank=rank,
-        world_size=world_size
+        world_size=world_size,
+        rpc_backend_options=rpc_backend_options
     )
 
     # Use a distributed autograd context.
@@ -29,7 +35,7 @@ def _run_process(rank, dst_rank, world_size):
         loss = rref1.to_here() + rref2.to_here()  # 获取要优化的远程参数列表 (`RRef`)
 
         # Backward pass (run distributed autograd).
-        dist_autograd.backward([loss.sum()])
+        dist_autograd.backward(context_id, [loss.sum()])
 
         # Build DistributedOptimizer.
         dist_optim = DistributedOptimizer(  # 分布式优化器在每个 worker 节点上创建其本地Optimizer的实例，并将持有这些本地优化器的 RRef。
@@ -39,7 +45,7 @@ def _run_process(rank, dst_rank, world_size):
         )
 
         # Run the distributed optimizer step.
-        dist_optim.step()
+        dist_optim.step(context_id)
 
 
 def run_process(rank, dst_rank, world_size):
