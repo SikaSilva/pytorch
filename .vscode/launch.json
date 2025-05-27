@@ -70,6 +70,15 @@
       "justMyCode": false,
     },
     {
+      "name": "pydb: test_my_zero_optimizer",
+      "type": "debugpy",
+      "request": "launch",
+      "program": "${workspaceFolder}/test/test_my_zero_optimizer.py",
+      "console": "integratedTerminal",
+      "stopOnEntry": false,
+      "justMyCode": false
+    },
+    {
       "name": "lldb: attach pytorch",
       "type": "lldb",
       "request": "attach",
