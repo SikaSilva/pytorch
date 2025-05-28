@@ -79,6 +79,15 @@
       "justMyCode": false
     },
     {
+      "name": "pydb: test_my_fsdp",
+      "type": "debugpy",
+      "request": "launch",
+      "program": "${workspaceFolder}/test/test_my_fsdp.py",
+      "console": "integratedTerminal",
+      "stopOnEntry": false,
+      "justMyCode": false
+    },
+    {
       "name": "lldb: attach pytorch",
       "type": "lldb",
       "request": "attach",
