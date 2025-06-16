@@ -94,5 +94,6 @@
     "hash_map": "cpp"
   },
   "C_Cpp.clang_format_style": "file:/root/workspace/pytorch/.clang-format",
-  "workbench.editor.enablePreview": false
+  "workbench.editor.enablePreview": false,
+  "C_Cpp.intelliSenseEngine": "default"
 }
