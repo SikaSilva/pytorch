@@ -106,6 +106,15 @@
       "justMyCode": false
     },
     {
+      "name": "pydb: test_my_mempool_malloc",
+      "type": "debugpy",
+      "request": "launch",
+      "program": "${workspaceFolder}/test/test_my_mempool_malloc.py",
+      "console": "integratedTerminal",
+      "stopOnEntry": false,
+      "justMyCode": false
+    },
+    {
       "name": "lldb: attach pytorch",
       "type": "lldb",
       "request": "attach",
